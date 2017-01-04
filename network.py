@@ -132,6 +132,12 @@ class Network(object):
                         for (x, y) in test_data]
         return sum(int(x == y) for (x, y) in test_results)
 
+    def evaluate_single(self, test_data):
+        """Returns the output of the neural network and the
+        corret result."""
+        for (x, y) in test_data:
+            return np.argmax(self.feedforward(x)), y
+
     def cost_derivative(self, output_activations, y):
         """Return the vector of partial derivatives \partial C_x /
         \partial a for the output activations."""

@@ -271,6 +271,12 @@ class Network(object):
             np.linalg.norm(w) ** 2 for w in self.weights)
         return cost
 
+    def evaluate_single(self, test_data):
+        """Returns the output of the neural network and the
+        corret result."""
+        for (x, y) in test_data:
+            return np.argmax(self.feedforward(x)), y
+
     def save(self, filename):
         """Save the neural network to the file ``filename``."""
         data = {"sizes": self.sizes,

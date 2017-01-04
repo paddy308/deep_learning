@@ -18,3 +18,7 @@ This is a research task for university!
 ### Packages: 
     > Numpy with MLK
     > Theano
+    
+    For visualisation:
+        > matplotlib
+    
