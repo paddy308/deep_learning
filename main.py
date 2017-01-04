@@ -8,8 +8,7 @@ from config import EPOCHS, LAYERS, LEARNING_RATE, MINI_BATCH_SIZE, NETWORK_TO_US
 
 def run():
     neuralNet = None
-    neuralNetworkFile = [os.path.join(DIRECTORY_MODELS, "NeuralNetwork_{}.json".format(NETWORK_TO_USE)),
-                         os.path.join(DIRECTORY_MODELS, "NeuralNetwork_{}.nnd".format(NETWORK_TO_USE))]
+    neuralNetworkFile = os.path.join(DIRECTORY_MODELS, "NeuralNetwork_{}.json".format(NETWORK_TO_USE))
 
     # Load and Split the data
     training_data, validation_data, test_data = mnist_loader.load_data_wrapper()
@@ -51,7 +50,7 @@ def run():
         #   2: Same as (1) but there is a convolutional layer added
         #   3: Same as (2) but there is a second convolutional layer added
         if not neuralNet:
-            neuralNet = construct_initial_neural_network(networkStructure=2)
+            neuralNet = construct_initial_neural_network(networkStructure=3)
 
         # Load the data in a way that Theano can copy the GPU
         training_data, validation_data, test_data = network.load_data_shared()

@@ -12,9 +12,7 @@ and omits many desirable features.
 # Libraries
 # Standard library
 import json
-import pickle
 import random
-import time
 
 # Third-party libraries
 import numpy as np
@@ -60,7 +58,6 @@ class Network(object):
 
         n = len(training_data)
         for j in range(epochs):
-            startTime = time.time()
             random.shuffle(training_data)
             mini_batches = [
                 training_data[k:k+mini_batch_size]
@@ -149,14 +146,9 @@ class Network(object):
                 "weights": [w.tolist() for w in self.weights],
                 "biases": [b.tolist() for b in self.biases]}
 
-        print("Save the Neural Network to \"{}\"".format(filename[0]))
-        with open(filename[0], "w") as file:
+        print("Save the Neural Network to \"{}\"".format(filename))
+        with open(filename, "w") as file:
             json.dump(data, file)
-
-        print("Save the Neural Network to \"{}\"".format(filename[1]))
-        with open(filename[1], "wb") as file:
-            pickle.dump(self, file)
-
 
 
 # Loading a Network
@@ -164,7 +156,7 @@ def load(filename):
     """Load a neural network from the file ``filename``.  Returns an
     instance of Network.
     """
-    with open(filename[0], "r") as file:
+    with open(filename, "r") as file:
         data = json.load(file)
 
     net = Network(data["sizes"])

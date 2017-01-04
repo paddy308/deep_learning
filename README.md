@@ -11,8 +11,8 @@ This is a research task for university!
     > validation accuracy of ~96.57%
 
 #### Network3 scored a:
-    > validation accuracy of ~98.73%
-    >       test accuracy of ~98.81%
+    > validation accuracy of ~99.02%
+    >       test accuracy of ~99.04%
 
 
 ### Packages: 
