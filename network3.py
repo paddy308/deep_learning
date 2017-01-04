@@ -22,10 +22,13 @@ from Chris Olah (http://colah.github.io ).
 Written for Theano 0.6 and 0.7, needs some changes for more recent
 versions of Theano.
 """
-#### Libraries
+# Libraries
+from config import DIRECTORY_DATA
+
 # Standard library
-import pickle
 import gzip
+import os
+import pickle
 
 # Third-party libraries
 import numpy as np
@@ -47,7 +50,7 @@ def ReLU(z): return T.maximum(0.0, z)
 from theano.tensor.nnet import sigmoid
 from theano.tensor import tanh
 
-#### Constants
+# Constants
 GPU = False
 if GPU:
     print("Trying to run under a GPU.  If this is not desired, then modify",
@@ -62,11 +65,11 @@ else:
           "network3.py to set\nthe GPU flag to True.")
 
 
-#### Load the MNIST data
-def load_data_shared(filename="./data/mnist.pkl.gz"):
-    f = gzip.open(filename, 'rb')
-    training_data, validation_data, test_data = pickle.load(f, encoding='latin1')
-    f.close()
+# Load the MNIST data
+def load_data_shared():
+    datapath = os.path.join(DIRECTORY_DATA, "mnist.pkl.gz")
+    with gzip.open(datapath, 'rb') as file:
+        training_data, validation_data, test_data = pickle.load(file, encoding='latin1')
 
     def shared(data):
         """Place the data into shared variables.  This allows Theano to copy
@@ -81,7 +84,7 @@ def load_data_shared(filename="./data/mnist.pkl.gz"):
     return [shared(training_data), shared(validation_data), shared(test_data)]
 
 
-#### Main class used to construct and train networks
+# Main class used to construct and train networks
 class Network(object):
     def __init__(self, layers, mini_batch_size):
         """Takes a list of `layers`, describing the network architecture, and
@@ -183,10 +186,10 @@ class Network(object):
         print("Corresponding test accuracy of {0:.2%}".format(test_accuracy))
 
 
-#### Define layer types
+# Define layer types
 class ConvPoolLayer(object):
     """Used to create a combination of a convolutional and a max-pooling
-    layer.  A more sophisticated implementation would separate the
+    layer. A more sophisticated implementation would separate the
     two, but for our purposes we'll always use them together, and it
     simplifies the code, so it makes sense to combine them.
     """
@@ -262,7 +265,7 @@ class FullyConnectedLayer(object):
             T.dot(self.inpt_dropout, self.w) + self.b)
 
     def accuracy(self, y):
-        "Return the accuracy for the mini-batch."
+        """Return the accuracy for the mini-batch."""
         return T.mean(T.eq(y, self.y_out))
 
 
@@ -289,15 +292,15 @@ class SoftmaxLayer(object):
         self.output_dropout = softmax(T.dot(self.inpt_dropout, self.w) + self.b)
 
     def cost(self, net):
-        "Return the log-likelihood cost."
+        """Return the log-likelihood cost."""
         return -T.mean(T.log(self.output_dropout)[T.arange(net.y.shape[0]), net.y])
 
     def accuracy(self, y):
-        "Return the accuracy for the mini-batch."
+        """"Return the accuracy for the mini-batch."""
         return T.mean(T.eq(y, self.y_out))
 
 
-#### Miscellanea
+# Miscellanea
 def size(data):
     """Return the size of the dataset `data`."""
     return data[0].get_value(borrow=True).shape[0]

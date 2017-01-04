@@ -11,7 +11,10 @@ and omits many desirable features.
 
 # Libraries
 # Standard library
+import json
+import pickle
 import random
+import time
 
 # Third-party libraries
 import numpy as np
@@ -57,6 +60,7 @@ class Network(object):
 
         n = len(training_data)
         for j in range(epochs):
+            startTime = time.time()
             random.shuffle(training_data)
             mini_batches = [
                 training_data[k:k+mini_batch_size]
@@ -64,8 +68,7 @@ class Network(object):
             for mini_batch in mini_batches:
                 self.update_mini_batch(mini_batch, eta)
             if test_data:
-                print("Epoch {0}: {1} / {2}".format(
-                    j, self.evaluate(test_data), n_test))
+                print("Epoch {0}: {1} / {2}".format(j, self.evaluate(test_data), n_test))
             else:
                 print("Epoch {0} complete".format(j))
 
@@ -134,9 +137,37 @@ class Network(object):
         \partial a for the output activations."""
         return output_activations-y
 
+    def save(self, filename):
+        """Save the neural network to the file ``filename``."""
+        data = {"sizes": self.sizes,
+                "weights": [w.tolist() for w in self.weights],
+                "biases": [b.tolist() for b in self.biases]}
+
+        print("Save the Neural Network to \"{}\"".format(filename[0]))
+        with open(filename[0], "w") as file:
+            json.dump(data, file)
+
+        print("Save the Neural Network to \"{}\"".format(filename[1]))
+        with open(filename[1], "wb") as file:
+            pickle.dump(self, file)
+
+
+
+# Loading a Network
+def load(filename):
+    """Load a neural network from the file ``filename``.  Returns an
+    instance of Network.
+    """
+    with open(filename[0], "r") as file:
+        data = json.load(file)
+
+    net = Network(data["sizes"])
+    net.weights = [np.array(w) for w in data["weights"]]
+    net.biases = [np.array(b) for b in data["biases"]]
+    return net
+
+
 # Miscellaneous functions
-
-
 def sigmoid(z):
     """The sigmoid function."""
     return 1.0 / (1.0 + np.exp(-z))

@@ -9,9 +9,10 @@ easily modifiable.  It is not optimized, and omits many desirable
 features.
 """
 
-#### Libraries
+# Libraries
 # Standard library
 import json
+import pickle
 import random
 import sys
 
@@ -19,8 +20,7 @@ import sys
 import numpy as np
 
 
-#### Define the quadratic and cross-entropy cost functions
-
+# Define the quadratic and cross-entropy cost functions
 class QuadraticCost(object):
     @staticmethod
     def fn(a, y):
@@ -54,10 +54,10 @@ class CrossEntropyCost(object):
         the method's parameters in order to make the interface
         consistent with the delta method for other cost classes.
         """
-        return (a - y)
+        return a - y
 
 
-#### Main Network class
+# Main Network class
 class Network(object):
     def __init__(self, sizes, cost=CrossEntropyCost):
         """The list ``sizes`` contains the number of neurons in the respective
@@ -208,7 +208,7 @@ class Network(object):
             activation = sigmoid(z)
             activations.append(activation)
         # backward pass
-        delta = (self.cost).delta(zs[-1], activations[-1], y)
+        delta = self.cost.delta(zs[-1], activations[-1], y)
         nabla_b[-1] = delta
         nabla_w[-1] = np.dot(delta, activations[-2].transpose())
         # Note that the variable l in the loop below is used a little
@@ -223,7 +223,7 @@ class Network(object):
             delta = np.dot(self.weights[-l + 1].transpose(), delta) * sp
             nabla_b[-l] = delta
             nabla_w[-l] = np.dot(delta, activations[-l - 1].transpose())
-        return (nabla_b, nabla_w)
+        return nabla_b, nabla_w
 
     def accuracy(self, data, convert=False):
         """Return the number of inputs in ``data`` for which the neural
@@ -264,7 +264,8 @@ class Network(object):
         cost = 0.0
         for x, y in data:
             a = self.feedforward(x)
-            if convert: y = vectorized_result(y)
+            if convert:
+                y = vectorized_result(y)
             cost += self.cost.fn(a, y) / len(data)
         cost += 0.5 * (lmbda / len(data)) * sum(
             np.linalg.norm(w) ** 2 for w in self.weights)
@@ -276,19 +277,24 @@ class Network(object):
                 "weights": [w.tolist() for w in self.weights],
                 "biases": [b.tolist() for b in self.biases],
                 "cost": str(self.cost.__name__)}
-        f = open(filename, "w")
-        json.dump(data, f)
-        f.close()
+
+        print("Save the Neural Network to \"{}\"".format(filename[0]))
+        with open(filename[0], "w") as file:
+            json.dump(data, file)
+
+        print("Save the Neural Network to \"{}\"".format(filename[1]))
+        with open(filename[1], "wb") as file:
+            pickle.dump(self, file)
 
 
-#### Loading a Network
+# Loading a Network
 def load(filename):
     """Load a neural network from the file ``filename``.  Returns an
     instance of Network.
     """
-    f = open(filename, "r")
-    data = json.load(f)
-    f.close()
+    with open(filename[0], "r") as file:
+        data = json.load(file)
+
     cost = getattr(sys.modules[__name__], data["cost"])
     net = Network(data["sizes"], cost=cost)
     net.weights = [np.array(w) for w in data["weights"]]
@@ -296,7 +302,7 @@ def load(filename):
     return net
 
 
-#### Miscellaneous functions
+# Miscellaneous functions
 def vectorized_result(j):
     """Return a 10-dimensional unit vector with a 1.0 in the j'th position
     and zeroes elsewhere.  This is used to convert a digit (0...9)

@@ -46,4 +46,10 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-.pkl
+# Folders
+env/
+.idea/
+__pycache__/
+
+# Files
+*.nnd  # neural network dump
