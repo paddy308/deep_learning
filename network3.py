@@ -185,6 +185,18 @@ class Network(object):
             best_validation_accuracy, best_iteration))
         print("Corresponding test accuracy of {0:.2%}".format(test_accuracy))
 
+    # def evaluate_single(self, test_data):
+    #     """Returns the output of the neural network and the
+    #     corret result."""
+    #     for (x, y) in test_data:
+    #         self.test_mb_predictions()
+    #         pass
+    #     return
+
+    def save(self, filename):
+        with open(filename, "wb") as file:
+            pickle.dump(self, file)
+
 
 # Define layer types
 class ConvPoolLayer(object):
@@ -298,6 +310,17 @@ class SoftmaxLayer(object):
     def accuracy(self, y):
         """"Return the accuracy for the mini-batch."""
         return T.mean(T.eq(y, self.y_out))
+
+
+# Loading a Network
+def load(filename):
+    """Load a neural network from the file ``filename``.  Returns an
+    instance of Network.
+    """
+    with open(filename, "rb") as file:
+        net = pickle.load(file)
+
+    return net
 
 
 # Miscellanea

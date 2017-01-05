@@ -14,6 +14,7 @@ def run():
     training_data, validation_data, test_data = mnist_loader.load_data_wrapper()
 
     if LOAD_NEURAL_NETWORK:
+        print("Load the Neural Network from \"{}\"".format(neuralNetworkFile))
         neuralNet = load(filepath=neuralNetworkFile)
 
     # USE THIS FOR network.py
@@ -50,7 +51,7 @@ def run():
         #   2: Same as (1) but there is a convolutional layer added
         #   3: Same as (2) but there is a second convolutional layer added
         if not neuralNet:
-            neuralNet = construct_initial_neural_network(networkStructure=3)
+            neuralNet = construct_initial_neural_network(networkStructure=2)
 
         # Load the data in a way that Theano can copy the GPU
         training_data, validation_data, test_data = network.load_data_shared()
@@ -60,6 +61,7 @@ def run():
                       validation_data, test_data)
 
     if SAVE_NEURAL_NETWORK:
+        print("Save the Neural Network to \"{}\"".format(neuralNetworkFile))
         neuralNet.save(filename=neuralNetworkFile)
 
 

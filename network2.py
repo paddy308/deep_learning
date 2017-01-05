@@ -283,7 +283,6 @@ class Network(object):
                 "biases": [b.tolist() for b in self.biases],
                 "cost": str(self.cost.__name__)}
 
-        print("Save the Neural Network to \"{}\"".format(filename))
         with open(filename, "w") as file:
             json.dump(data, file)
 
