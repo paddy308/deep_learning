@@ -1,9 +1,9 @@
-import mnist_loader
 import os
 
+import mnist_loader
 from config import DIRECTORY_MODELS
-from config import NETWORK_TO_USE, LOAD_NEURAL_NETWORK, SAVE_NEURAL_NETWORK
-from config import EPOCHS, LAYERS, LEARNING_RATE, MINI_BATCH_SIZE, NETWORK_TO_USE
+from config import LOAD_NEURAL_NETWORK, SAVE_NEURAL_NETWORK
+from config import EPOCHS, LAYERS, LEARNING_RATE, MINI_BATCH_SIZE, NETWORK_TO_USE, NETWORK_TO_USE
 
 
 def run():
