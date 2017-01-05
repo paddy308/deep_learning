@@ -1,14 +1,12 @@
 # Libraries
-import mnist_loader
-from config import NETWORK_TO_USE, DIRECTORY_MODELS
-
-# Standard library
-import matplotlib.pyplot as plt
 import os
 import random
 
-# Third-party libraries
+import matplotlib.pyplot as plt
 import numpy as np
+
+import mnist_loader
+from config import NETWORK_TO_USE, DIRECTORY_MODELS
 
 
 def main(neuralNet):
@@ -55,7 +53,7 @@ def load_network(file_path):
 
 if __name__ == "__main__":
     # Load the network from the file.
-    filepath = [os.path.join(DIRECTORY_MODELS, "NeuralNetwork_{}.json".format(NETWORK_TO_USE))]
+    filepath = os.path.join(DIRECTORY_MODELS, "NeuralNetwork_{}.json".format(NETWORK_TO_USE))
     neural_network = load_network(file_path=filepath)
 
     # We don't want to test our neural net on trainings data
