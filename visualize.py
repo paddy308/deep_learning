@@ -20,7 +20,7 @@ def main(neuralNet):
     guess, real = neuralNet.evaluate_single([picture])
     visualize(picture, guess)
 
-    print("{real} / {guess}".format(real=real, guess=guess))
+    print("{real} / {guess}  -  {i}".format(real=real, guess=guess, i=pictureIndex))
     return real == guess
 
 
@@ -45,6 +45,7 @@ def load_network(file_path):
     elif NETWORK_TO_USE == 2:
         import network2 as network
     elif NETWORK_TO_USE == 3:
+        # import network3 as network
         print("Visualization for Network3 isn't implemented yet.")
         exit(1)
 

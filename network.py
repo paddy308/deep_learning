@@ -146,7 +146,6 @@ class Network(object):
                 "weights": [w.tolist() for w in self.weights],
                 "biases": [b.tolist() for b in self.biases]}
 
-        print("Save the Neural Network to \"{}\"".format(filename))
         with open(filename, "w") as file:
             json.dump(data, file)
 

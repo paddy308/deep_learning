@@ -9,8 +9,8 @@ DIRECTORY_MODELS = os.path.join(DIRECTORY_ROOT, 'saved')
 
 
 # PARAM
-NETWORK_TO_USE = 1
-LOAD_NEURAL_NETWORK = True
+NETWORK_TO_USE = 2
+LOAD_NEURAL_NETWORK = False
 SAVE_NEURAL_NETWORK = True
 
 LAYERS = [784, 30, 10]          # Number of neurons per layer

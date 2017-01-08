@@ -14,6 +14,7 @@ def run():
     training_data, validation_data, test_data = mnist_loader.load_data_wrapper()
 
     if LOAD_NEURAL_NETWORK:
+        print("Load the Neural Network from \"{}\"".format(neuralNetworkFile))
         neuralNet = load(filepath=neuralNetworkFile)
 
     # USE THIS FOR network.py
@@ -60,6 +61,7 @@ def run():
                       validation_data, test_data)
 
     if SAVE_NEURAL_NETWORK:
+        print("Save the Neural Network to \"{}\"".format(neuralNetworkFile))
         neuralNet.save(filename=neuralNetworkFile)
 
 
