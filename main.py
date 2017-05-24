@@ -3,7 +3,7 @@ import os
 import mnist_loader
 from config import DIRECTORY_MODELS
 from config import LOAD_NEURAL_NETWORK, SAVE_NEURAL_NETWORK
-from config import EPOCHS, LAYERS, LEARNING_RATE, MINI_BATCH_SIZE, NETWORK_TO_USE, NETWORK_TO_USE
+from config import EPOCHS, LAYERS, LEARNING_RATE, MINI_BATCH_SIZE, NETWORK_TO_USE
 
 
 def run():
@@ -104,6 +104,51 @@ def construct_initial_neural_network(networkStructure=1):
                           activation_fn=ReLU),
             FullyConnectedLayer(n_in=40 * 4 * 4, n_out=100),
             SoftmaxLayer(n_in=100, n_out=10)], MINI_BATCH_SIZE)
+
+    elif networkStructure == 4:
+        # This network has two Convolutional Layers
+        neuralNet = network.Network([
+            ConvPoolLayer(image_shape=(MINI_BATCH_SIZE, 1, 28, 28),
+                          filter_shape=(20, 1, 5, 5),
+                          poolsize=(1, 1),
+                          activation_fn=ReLU),
+            ConvPoolLayer(image_shape=(MINI_BATCH_SIZE, 20, 24, 24),
+                          filter_shape=(40, 20, 5, 5),
+                          poolsize=(1, 1),
+                          activation_fn=ReLU),
+            ConvPoolLayer(image_shape=(MINI_BATCH_SIZE, 40, 20, 20),
+                          filter_shape=(60, 40, 5, 5),
+                          poolsize=(1, 1),
+                          activation_fn=ReLU),
+            ConvPoolLayer(image_shape=(MINI_BATCH_SIZE, 60, 16, 16),
+                          filter_shape=(80, 60, 5, 5),
+                          poolsize=(1, 1),
+                          activation_fn=ReLU),
+            ConvPoolLayer(image_shape=(MINI_BATCH_SIZE, 80, 12, 12),
+                          filter_shape=(100, 80, 5, 5),
+                          poolsize=(2, 2),
+                          activation_fn=ReLU),
+            FullyConnectedLayer(n_in=100 * 4 * 4, n_out=1000, activation_fn=ReLU, p_dropout=0.5),
+            FullyConnectedLayer(n_in=1000,        n_out=1000, activation_fn=ReLU, p_dropout=0.5),
+            SoftmaxLayer(n_in=1000, n_out=10, p_dropout=0.5)], MINI_BATCH_SIZE)
+
+    #####################################################################
+    # CHARACTER CLASSIFICATION
+    #####################################################################
+    elif networkStructure == 5:
+        # This is the CNN for characters
+        # This network has two Convolutional Layers
+        neuralNet = network.Network([
+            ConvPoolLayer(image_shape=(MINI_BATCH_SIZE, 1, 28, 28),
+                          filter_shape=(20, 1, 5, 5),
+                          poolsize=(2, 2),
+                          activation_fn=ReLU),
+            ConvPoolLayer(image_shape=(MINI_BATCH_SIZE, 20, 12, 12),
+                          filter_shape=(40, 20, 5, 5),
+                          poolsize=(2, 2),
+                          activation_fn=ReLU),
+            FullyConnectedLayer(n_in=40 * 4 * 4, n_out=100),
+            SoftmaxLayer(n_in=100, n_out=26)], MINI_BATCH_SIZE)
     else:
         # Default network without any Convolutional Layers
         neuralNet = network.Network([

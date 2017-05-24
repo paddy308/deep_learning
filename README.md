@@ -5,7 +5,7 @@
 This is a research task for university!
 
 #### Network1 scored a:
-    > validation accuracy of ~92.20%
+    > validation accuracy of ~92.73%
 
 #### Network2 scored a:
     > validation accuracy of ~96.57%

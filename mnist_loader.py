@@ -9,11 +9,10 @@ function usually called by our neural network code.
 """
 
 # Libraries
-from config import DIRECTORY_DATA
+from config import FILE_DATA
 
 # Standard library
 import gzip
-import os
 import pickle
 
 # Third-party libraries
@@ -43,8 +42,7 @@ def load_data():
     That's done in the wrapper function ``load_data_wrapper()``, see
     below.
     """
-    datapath = os.path.join(DIRECTORY_DATA, "mnist.pkl.gz")
-    with gzip.open(datapath, 'rb') as file:
+    with gzip.open(FILE_DATA, 'rb') as file:
         training_data, validation_data, test_data = pickle.load(file, encoding='latin1')
 
     return training_data, validation_data, test_data
@@ -88,5 +86,6 @@ def vectorized_result(j):
     (0...9) into a corresponding desired output from the neural
     network."""
     e = np.zeros((10, 1))
+    #e = np.zeros((26, 1))
     e[j] = 1.0
     return e
