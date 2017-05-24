@@ -3,7 +3,7 @@ import os
 
 # PARAM
 NETWORK_TO_USE = 2
-LOAD_NEURAL_NETWORK = False
+LOAD_NEURAL_NETWORK = True
 SAVE_NEURAL_NETWORK = True
 
 # LAYERS = [784, 200, 100, 26]          # Number of neurons per layer
